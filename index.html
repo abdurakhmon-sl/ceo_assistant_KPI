@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bosh direktor yordamchisi — KPI va lavozim kartasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF8F1; --ink:#16201C; --muted:#5A6661; --line:#E2DCCD;
+    --acc:#0E6B53; --acc-soft:#E5EFE9; --gold:#B5803A; --gold-soft:#F4EAD8;
+    --card:#FFFFFF; --shadow:0 1px 2px rgba(22,32,28,.04),0 8px 24px rgba(22,32,28,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% -5%,rgba(14,107,83,.05),transparent 38%),radial-gradient(circle at 95% 8%,rgba(181,128,58,.05),transparent 34%);
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px}
+  .serif{font-family:"Fraunces",Georgia,serif}
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.12;letter-spacing:-.01em}
+  a{color:var(--acc)}
+  .eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--acc)}
+
+  /* hero */
+  header.hero{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+  .hero h1{font-size:clamp(2.3rem,7vw,3.7rem);margin:.45em 0 .12em}
+  .hero .lede{font-size:clamp(1.05rem,2.4vw,1.32rem);color:var(--muted);font-family:"Fraunces",serif;font-style:italic;font-weight:400}
+  .meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:26px;font-size:.86rem;color:var(--muted)}
+  .meta b{color:var(--ink);font-weight:600}
+  .badge{display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:var(--acc);color:#fff;padding:9px 16px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:var(--shadow)}
+  .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:#9be8c9}
+
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  .kicker{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  h2{font-size:clamp(1.5rem,4vw,2.1rem);margin-bottom:8px}
+  .sec-lede{color:var(--muted);max-width:62ch;margin-bottom:26px}
+
+  /* principle */
+  .twin{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pill{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .pill.good{border-color:#bfe0d2}
+  .pill.bad{border-color:#ecd2c8}
+  .pill .tag{font-weight:700;font-size:.82rem;letter-spacing:.04em;display:inline-block;margin-bottom:8px}
+  .pill.good .tag{color:var(--acc)} .pill.bad .tag{color:#b4543a}
+  .pill p{font-size:.95rem;color:var(--muted)}
+
+  /* comparison */
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;min-width:620px;background:var(--card)}
+  th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);font-size:.92rem;vertical-align:top}
+  thead th{background:#16201C;color:#fff;font-family:"Fraunces",serif;font-weight:600;font-size:.92rem}
+  thead th.rec{background:var(--acc)}
+  tbody th{font-weight:600;color:var(--ink);background:#FAF7EF}
+  td.rec{background:var(--acc-soft);font-weight:600}
+  tbody tr:last-child td,tbody tr:last-child th{border-bottom:none}
+
+  /* variant cards */
+  .vcards{display:grid;gap:16px}
+  .vcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);position:relative}
+  .vcard.rec{border:2px solid var(--acc)}
+  .vcard h3{font-size:1.25rem;margin-bottom:6px}
+  .vcard .num{font-family:"Fraunces",serif;font-size:.8rem;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+  .vcard p{color:var(--muted);font-size:.95rem;margin-top:6px}
+  .rec-tag{position:absolute;top:-11px;right:18px;background:var(--acc);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:5px 12px;border-radius:999px;text-transform:uppercase}
+
+  /* role card */
+  .role > h3{font-size:1.15rem;margin:26px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--acc-soft);color:var(--ink)}
+  .meta-grid{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:.95rem}
+  .meta-grid dt{font-weight:600;color:var(--acc)}
+  .meta-grid dd{color:var(--muted)}
+  .zone{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+  .zone h4{font-family:"Hanken Grotesk",sans-serif;font-size:1.02rem;font-weight:700;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .zone .pay{color:var(--acc);font-family:"Fraunces",serif;font-weight:700;white-space:nowrap}
+  .zone dl{margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.9rem}
+  .zone dt{font-weight:600;color:var(--ink);white-space:nowrap}
+  .zone dd{color:var(--muted)}
+  ul.clean{list-style:none;display:grid;gap:8px}
+  ul.clean li{padding-left:22px;position:relative;color:var(--muted);font-size:.95rem}
+  ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--acc)}
+  ul.clean.no li::before{background:#c47a5e}
+  .pay-box{background:var(--acc-soft);border:1px solid #bfe0d2;border-radius:14px;padding:18px 20px;font-size:.95rem}
+  .pay-box b{color:var(--ink)}
+  .gate{border-left:3px solid var(--gold);padding:6px 0 6px 16px;margin:12px 0}
+  .gate .g{font-weight:700;color:var(--gold)}
+  .note{font-size:.85rem;color:var(--muted);font-style:italic;margin-top:12px}
+
+  /* calculator */
+  .calc{background:#16201C;color:#EDEAE0;border-radius:20px;padding:26px 24px;box-shadow:var(--shadow)}
+  .calc h3{color:#fff;font-size:1.3rem;margin-bottom:4px}
+  .calc .sub{color:#9fb0a8;font-size:.9rem;margin-bottom:20px}
+  .row{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:center;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+  .row .lbl{font-size:.95rem;font-weight:500}
+  .row .max{font-size:.78rem;color:#8fa49b}
+  .row .earn{font-family:"Fraunces",serif;font-weight:700;color:#7fe3bd;font-size:1.05rem;text-align:right;min-width:64px}
+  .row input[type=range]{grid-column:1/-1;width:100%;-webkit-appearance:none;height:6px;border-radius:999px;background:rgba(255,255,255,.16);margin-top:6px}
+  .row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#7fe3bd;cursor:pointer;border:3px solid #16201C;box-shadow:0 0 0 1px #7fe3bd}
+  .row input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#7fe3bd;cursor:pointer;border:3px solid #16201C}
+  .pct{font-size:.82rem;color:#9fb0a8;text-align:right}
+  .totals{margin-top:22px;display:grid;gap:8px}
+  .totals .t{display:flex;justify-content:space-between;font-size:.98rem}
+  .totals .grand{font-family:"Fraunces",serif;font-size:1.5rem;font-weight:700;color:#fff;padding-top:10px;border-top:1px solid rgba(255,255,255,.16);align-items:baseline}
+  .totals .grand b{color:#7fe3bd}
+
+  /* sign-off */
+  .sign{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 24px;box-shadow:var(--shadow)}
+  .opts{display:grid;gap:10px;margin:14px 0 22px}
+  .opt{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px 16px;cursor:pointer;font-weight:500}
+  .opt input{accent-color:var(--acc);width:18px;height:18px}
+  .opt:has(input:checked){border-color:var(--acc);background:var(--acc-soft)}
+  .sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;margin-top:8px}
+  .field{border-bottom:1.5px solid var(--ink);padding-bottom:6px;min-height:42px;display:flex;align-items:flex-end}
+  .field .cap{font-size:.76rem;color:var(--muted);font-weight:600}
+  .field{flex-direction:column;align-items:flex-start;gap:18px}
+  .btn{margin-top:24px;background:var(--acc);color:#fff;border:none;border-radius:999px;padding:13px 26px;font-family:inherit;font-weight:600;font-size:.95rem;cursor:pointer;box-shadow:var(--shadow)}
+  .btn:hover{background:#0b5743}
+
+  footer{padding:36px 0 60px;color:var(--muted);font-size:.82rem;text-align:center}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  @media(max-width:680px){
+    .twin{grid-template-columns:1fr}
+    .sign-grid{grid-template-columns:1fr}
+    .zone h4{flex-direction:column;gap:4px}
+    header.hero{padding:48px 0 32px}
+    .meta-grid{grid-template-columns:1fr}
+    .meta-grid dt{margin-top:6px}
+  }
+  @media print{
+    body{background:#fff}
+    .calc{background:#fff;color:#000;border:1px solid #ccc}
+    .calc h3,.totals .grand{color:#000}
+    .row input[type=range]{display:none}
+    .btn{display:none}
+    section{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow rv">Smartlife · Ichki hujjat</div>
+    <h1 class="rv" style="animation-delay:.05s">Bosh direktor yordamchisi</h1>
+    <div class="lede rv" style="animation-delay:.12s">KPI tizimi va lavozim kartasi — kelishish uchun</div>
+    <div class="meta rv" style="animation-delay:.2s">
+      <span><b>Tayyorladi:</b> Moliyaviy direktor</span>
+      <span><b>Belgilangan maosh:</b> 500 $</span>
+      <span><b>Oʻzgaruvchan qism (B):</b> 4500 $ gacha</span>
+      <span><b>Jami:</b> 5000 $ gacha</span>
+      <span><b>Maqsad:</b> tasdiqlash</span>
+    </div>
+    <div class="badge rv" style="animation-delay:.28s">Tavsiya: 3-variant — Gibrid</div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Asosiy tamoyil</div>
+    <h2 class="serif">KPI bajarilgan ish uchun, natijadan emas</h2>
+    <p class="sec-lede">Yordamchi faqat koʻmaklashadi — sotuv va lidlar uning shaxsiy natijasi emas, shuning uchun maoshni ularga bogʻlab boʻlmaydi. Pul faqat uning oʻz mehnati uchun toʻlanadi. Biznes natijasi esa faqat lavozimni oshirish geytlarida hisobga olinadi — oylik mukofotda emas.</p>
+    <div class="twin">
+      <div class="pill good">
+        <span class="tag">Toʻgʻri — bajarilgan ish uchun</span>
+        <p>Topshiriqlar yopildi, bayonnomalar yozildi, reyestr dolzarb, kontent chiqdi. Oʻlchov — uning oʻz mehnati. Mana shu uchun toʻlaymiz.</p>
+      </div>
+      <div class="pill bad">
+        <span class="tag">Notoʻgʻri — nimadandir foiz</span>
+        <p>Mukofot sotuvga, lidlarga, tarmoq daromadiga bogʻlansa — bu uning natijasi emas. Bunday KPI maʼnosini yoʻqotadi va adolatsiz boʻladi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Taqqoslash</div>
+    <h2 class="serif">Uch variant</h2>
+    <p class="sec-lede">Uchta tizim koʻrib chiqildi. Tavsiya — 3-variant: pul har doim adolatli (oʻz ishi uchun), oʻsish esa real biznes natijalari orqali.</p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Mezon</th>
+            <th>1-variant<br>Sof yordamchi + PR</th>
+            <th>2-variant<br>Rotatsiya</th>
+            <th class="rec">3-variant<br>Gibrid (tavsiya)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>Pul nima uchun toʻlanadi</th><td>faqat oʻz ishi uchun</td><td>jamoa natijasi + intizomi</td><td class="rec">oʻz ishi uchun (1-variant kabi)</td></tr>
+          <tr><th>Nima uchun koʻtariladi</th><td>yordamchi greydlari</td><td>oʻsha biznes-geytlar (= pul)</td><td class="rec">biznes-geytlar (= koʻtarilish, pul emas)</td></tr>
+          <tr><th>Bosh direktor ishtiroki</th><td>minimal (~10%)</td><td>minimal</td><td class="rec">minimal</td></tr>
+          <tr><th>Pul adolatliligi</th><td>yuqori</td><td>oʻrtacha (tarmoqqa bogʻliq)</td><td class="rec">yuqori</td></tr>
+          <tr><th>Oʻsish motivatsiyasi</th><td>oʻrtacha</td><td>yuqori</td><td class="rec">yuqori</td></tr>
+          <tr><th>Xodim uchun risk</th><td>past</td><td>oʻrtacha</td><td class="rec">past</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="vcards" style="margin-top:22px">
+      <div class="vcard">
+        <span class="num">1-variant</span>
+        <h3>Sof yordamchi + PR</h3>
+        <p>Pul faqat yordamchining shaxsiy ishi uchun. Jamoa natijalari hisobga olinmaydi. Oʻsish — yordamchi greydlari. Eng adolatli va past riskli, lekin shifti pastroq.</p>
+      </div>
+      <div class="vcard">
+        <span class="num">2-variant</span>
+        <h3>Rotatsiya-yordamchi</h3>
+        <p>Mukofot jamoa natijasiga (50%) va uning intizomiga (40%) bogʻlanadi. Marketing → sotuv → rivojlanish bosqichlari. Kamchilik: tarmoq yomon oy koʻrsa, u oʻz aybisiz kam oladi.</p>
+      </div>
+      <div class="vcard rec">
+        <span class="rec-tag">Tavsiya</span>
+        <span class="num">3-variant</span>
+        <h3>Gibrid</h3>
+        <p>Ikki mustaqil kontur: <b>pul</b> — bajarilgan ish uchun (zonalarga bogʻlangan), <b>oʻsish</b> — biznes-geytlar lavozimni oshiradi, oylik mukofotni emas. «Adolatli pul + real oʻsish» boʻyicha eng yaxshi yechim.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap role">
+    <div class="kicker">3-variant boʻyicha</div>
+    <h2 class="serif">Lavozim kartasi</h2>
+    <p class="sec-lede">Yordamchi nima qiladi, nimaga javobgar va nima uchun qancha oladi — quyida toʻliq.</p>
+
+    <h3>Lavozim maqsadi</h3>
+    <p style="color:var(--muted)">Bosh direktorning ishonchli oʻng qoʻli boʻlish: uning shaxsiy topshiriqlarini bajarish, kommunikatsiyani yuritish va qarorlar ijrosini kuzatib borish — funksiyalarni boshqarmasdan, balki kuchaytirib.</p>
+
+    <h3>Boʻysunish va chegaralar</h3>
+    <dl class="meta-grid">
+      <dt>Boʻysunadi</dt><dd>Bosh direktorga (CEO)</dd>
+      <dt>Chegara</dt><dd>Operatsion ijro — Operatsion direktor (COO) zonasi. Yordamchi unga kirmaydi.</dd>
+      <dt>Roli</dt><dd>Qayd etadi va maʼlum qiladi — buyruq bermaydi va ijroni qistamaydi.</dd>
+    </dl>
+
+    <h3>Masʼuliyat sohalari va toʻlov</h3>
+
+    <div class="zone">
+      <h4>1. Bosh direktorning shaxsiy topshiriqlari <span class="pay">1575 $</span></h4>
+      <dl>
+        <dt>Nima qiladi</dt><dd>CEO topshiriqlarini oʻz vaqtida, eslatmasdan bajaradi.</dd>
+        <dt>«Bajarildi»</dt><dd>topshiriq muddatigacha yopilgan.</dd>
+        <dt>Qanday qayd etiladi</dt><dd>vazifa-treker (yoki Telegram-bot).</dd>
+      </dl>
+    </div>
+
+    <div class="zone">
+      <h4>2. PR / kommunikatsiya <span class="pay">1125 $</span></h4>
+      <dl>
+        <dt>Nima qiladi</dt><dd>kontent-reja boʻyicha matn, post va taqdimotlar tayyorlaydi va chiqaradi.</dd>
+        <dt>«Bajarildi»</dt><dd>jadval boʻyicha chiqdi va nuqsonsiz — xato yoki brend-kitobga zid material hisobga olinmaydi.</dd>
+        <dt>Qanday qayd etiladi</dt><dd>kontent-kalendar + muharrir tekshiruvi (Bosh direktor emas).</dd>
+      </dl>
+    </div>
+
+    <div class="zone">
+      <h4>3. CEO topshiriqlari reyestri <span class="pay">675 $</span></h4>
+      <dl>
+        <dt>Nima qiladi</dt><dd>Bosh direktorning shaxsiy topshiriqlari yagona reyestrini yuritadi, statuslarni dolzarb saqlaydi.</dd>
+        <dt>«Bajarildi»</dt><dd>reyestr toʻliq (qamrov) va yangilangan (dolzarblik).</dd>
+        <dt>Chegara</dt><dd>ijroni qistamaydi — bu COO ishi; faqat qayd etadi va CEOga xabar beradi.</dd>
+      </dl>
+    </div>
+
+    <div class="zone">
+      <h4>4. Bosh direktor yigʻilishlari sikli <span class="pay">675 $</span></h4>
+      <dl>
+        <dt>Nima qiladi</dt><dd>yigʻilishdan oldin material tayyorlaydi, soʻng vazifalar bilan bayonnoma tarqatadi.</dd>
+        <dt>«Bajarildi»</dt><dd>brif oldindan tayyor + bayonnoma 24 soat ichida tarqatilgan.</dd>
+        <dt>Qanday qayd etiladi</dt><dd>kalendar + tarqatish fakti.</dd>
+      </dl>
+    </div>
+
+    <div class="zone">
+      <h4>5. Tashabbuskorlik / ishonchlilik <span class="pay">450 $</span></h4>
+      <dl>
+        <dt>Nima qiladi</dt><dd>tashabbus koʻrsatadi, maxfiylikni saqlaydi, ishonchli boʻladi.</dd>
+        <dt>Qanday qayd etiladi</dt><dd>Bosh direktorning yengil oylik bahosi — yagona subyektiv qism (10%).</dd>
+      </dl>
+    </div>
+
+    <h3>Vakolatlar</h3>
+    <ul class="clean">
+      <li>Reyestr yuritadi, materiallar tayyorlaydi, statusni CEO uchun maʼlumot sifatida soʻraydi.</li>
+      <li>Kontent-rejani amalga oshiradi: belgilangan doirada matn va materiallar tayyorlaydi.</li>
+    </ul>
+
+    <h3>Nima qilmaydi (chegaralar)</h3>
+    <ul class="clean no">
+      <li>Xodimlarga buyruq bermaydi va operatsion ijroni qistamaydi — bu Operatsion direktor zonasi.</li>
+      <li>Yigʻilishdan chiqqan operatsion vazifalarni faqat qayd etadi va uzatadi, ularning ijrosini boshqarmaydi.</li>
+    </ul>
+
+    <h3>Toʻlov</h3>
+    <div class="pay-box">
+      <p><b>Belgilangan maosh — 500 $.</b> Lavozim yopilgani va doimiy tayyorlik uchun.</p>
+      <p style="margin-top:10px"><b>Oʻzgaruvchan qism — 4500 $ gacha (B).</b> Zonalar boʻyicha bajarilgan ish uchun (yuqoridagi summalar). Bonus = zonalar boʻyicha topilgan summalar yigʻindisi. «Nimadandir foiz» yoʻq — beshta aniq ish boʻlagi, har biriga oʻz toʻlovi.</p>
+      <p style="margin-top:10px"><b>Jami — 500 dan 5000 $ gacha oyiga.</b></p>
+    </div>
+
+    <h3>Oʻsish — geytlar</h3>
+    <div class="gate"><span class="g">Geyt 1 →</span> Sotuv yordamchisi. Shart: 16 000 sifatli lid (5 filialdan 10 000 + Toshkentdan 6 000), call-markaz tasdiqlaydi, 2 oy ketma-ket <b>va</b> oylik baho ≥85%.</div>
+    <div class="gate"><span class="g">Geyt 2 →</span> Rivojlanish yordamchisi. Shart: tarmoq boʻyicha oʻrtacha ≥ 500 000 $ / filial oyiga, 2 oy <b>va</b> oylik baho ≥85%.</div>
+    <div class="gate"><span class="g">Geyt 3 →</span> keyingi lavozim. Shart: yangi filial / yoʻnalish boʻyicha biznes-keys himoya qilinib, tasdiqlangan.</div>
+    <p class="note">Ikki tomonlama shart (biznes natija <b>va</b> yuqori baho) «birovning yelkasida koʻtarilish»dan himoya qiladi. Geytlar lavozim va maoshni oshiradi — oylik mukofotni emas.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Interaktiv</div>
+    <h2 class="serif">Bonus kalkulyatori</h2>
+    <p class="sec-lede">Har bir zonada qancha ish bajarilganini belgilang — bonus jonli hisoblanadi.</p>
+    <div class="calc" id="calc">
+      <h3>Oylik bonus</h3>
+      <div class="sub">Belgilangan maosh 500 $ + zonalar boʻyicha bajarilgan ish</div>
+      <div id="rows"></div>
+      <div class="totals">
+        <div class="t"><span>Belgilangan maosh</span><span>500 $</span></div>
+        <div class="t"><span>Bonus (bajarilgan ish)</span><span id="bonus">0 $</span></div>
+        <div class="t grand"><span>Jami (qoʻlga)</span><b id="grand">500 $</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Kelishish</div>
+    <h2 class="serif">Tasdiqlash va imzo</h2>
+    <p class="sec-lede">Tanlangan variantni belgilang va hujjatni imzolang.</p>
+    <div class="sign">
+      <div class="opts">
+        <label class="opt"><input type="radio" name="variant"> 1-variant — Sof yordamchi + PR</label>
+        <label class="opt"><input type="radio" name="variant"> 2-variant — Rotatsiya</label>
+        <label class="opt"><input type="radio" name="variant" checked> 3-variant — Gibrid (tavsiya)</label>
+      </div>
+      <div class="sign-grid">
+        <div class="field"><span class="cap">F.I.Sh.</span></div>
+        <div class="field"><span class="cap">Lavozim (Bosh direktor / direktor)</span></div>
+        <div class="field"><span class="cap">Sana</span></div>
+        <div class="field"><span class="cap">Imzo</span></div>
+      </div>
+      <button class="btn" onclick="window.print()">Chop etish / PDF saqlash</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Smartlife · Bosh direktor yordamchisi uchun KPI va lavozim kartasi · ichki hujjat</div>
+</footer>
+
+<script>
+  const zones=[
+    {n:"1. Shaxsiy topshiriqlar",max:1575},
+    {n:"2. PR / kommunikatsiya",max:1125},
+    {n:"3. Topshiriqlar reyestri",max:675},
+    {n:"4. Yigʻilishlar sikli",max:675},
+    {n:"5. Tashabbuskorlik",max:450},
+  ];
+  const rowsEl=document.getElementById('rows');
+  zones.forEach((z,i)=>{
+    const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<span class="lbl">${z.n}<span class="max"> · maks ${z.max} $</span></span>
+      <span class="earn" id="e${i}">${z.max} $</span>
+      <input type="range" min="0" max="100" value="100" id="s${i}">
+      <span class="pct" id="p${i}" style="grid-column:1/-1">100% bajarildi</span>`;
+    rowsEl.appendChild(r);
+  });
+  function calc(){
+    let b=0;
+    zones.forEach((z,i)=>{
+      const v=+document.getElementById('s'+i).value;
+      const earn=Math.round(z.max*v/100);
+      b+=earn;
+      document.getElementById('e'+i).textContent=earn+' $';
+      document.getElementById('p'+i).textContent=v+'% bajarildi';
+    });
+    document.getElementById('bonus').textContent=b+' $';
+    document.getElementById('grand').textContent=(500+b)+' $';
+  }
+  zones.forEach((z,i)=>document.getElementById('s'+i).addEventListener('input',calc));
+  calc();
+</script>
+</body>
+</html>
